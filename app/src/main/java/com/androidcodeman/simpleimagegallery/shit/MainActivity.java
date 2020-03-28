@@ -1,4 +1,4 @@
-package com.androidcodeman.simpleimagegallery;
+package com.androidcodeman.simpleimagegallery.shit;
 
 import android.Manifest;
 import android.content.Intent;
@@ -15,12 +15,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.androidcodeman.simpleimagegallery.utils.MarginDecoration;
-import com.androidcodeman.simpleimagegallery.utils.PicHolder;
-import com.androidcodeman.simpleimagegallery.utils.imageFolder;
-import com.androidcodeman.simpleimagegallery.utils.itemClickListener;
-import com.androidcodeman.simpleimagegallery.utils.pictureFacer;
-import com.androidcodeman.simpleimagegallery.utils.pictureFolderAdapter;
+import com.androidcodeman.simpleimagegallery.R;
+import com.androidcodeman.simpleimagegallery.shit.utils.MarginDecoration;
+import com.androidcodeman.simpleimagegallery.shit.utils.PicHolder;
+import com.androidcodeman.simpleimagegallery.shit.utils.imageFolder;
+import com.androidcodeman.simpleimagegallery.shit.utils.itemClickListener;
+import com.androidcodeman.simpleimagegallery.shit.utils.pictureFacer;
+import com.androidcodeman.simpleimagegallery.shit.utils.pictureFolderAdapter;
 import java.util.ArrayList;
 
 /**

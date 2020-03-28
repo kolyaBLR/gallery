@@ -1,4 +1,4 @@
-package com.androidcodeman.simpleimagegallery.utils;
+package com.androidcodeman.simpleimagegallery.shit.utils;
 
 import android.content.Context;
 import android.content.res.TypedArray;

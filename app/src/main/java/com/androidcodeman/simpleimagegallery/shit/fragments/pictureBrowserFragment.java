@@ -1,4 +1,4 @@
-package com.androidcodeman.simpleimagegallery.fragments;
+package com.androidcodeman.simpleimagegallery.shit.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -17,9 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.androidcodeman.simpleimagegallery.R;
-import com.androidcodeman.simpleimagegallery.utils.imageIndicatorListener;
-import com.androidcodeman.simpleimagegallery.utils.pictureFacer;
-import com.androidcodeman.simpleimagegallery.utils.recyclerViewPagerImageIndicator;
+import com.androidcodeman.simpleimagegallery.shit.utils.imageIndicatorListener;
+import com.androidcodeman.simpleimagegallery.shit.utils.pictureFacer;
+import com.androidcodeman.simpleimagegallery.shit.utils.recyclerViewPagerImageIndicator;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
