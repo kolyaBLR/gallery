@@ -18,4 +18,6 @@ class SessionViewModel : ViewModel() {
     }
 
     fun isAuth() = sharedPreferences.getString("AUTH", null) != null
+
+    fun getUserName() = sharedPreferences.getString("AUTH", null)
 }

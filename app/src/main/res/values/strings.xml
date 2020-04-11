@@ -51,4 +51,12 @@
     <string name="sign_out">sign out</string>
     <string name="cancel">cancel</string>
     <string name="error">Error</string>
+    <string name="title">title</string>
+    <string name="description">description</string>
+    <string name="title_is_enpty">title is empty</string>
+    <string name="description_is_enpty">description is empty</string>
+    <string name="image_is_empty">Picture is not selected</string>
+    <string name="create_new_post">Create new post</string>
+    <string name="post_created">Post created!</string>
+    <string name="saving_error">saving error</string>
 </resources>

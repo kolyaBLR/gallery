@@ -5,10 +5,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.androidcodeman.simpleimagegallery.json.Post
 
 class ImagesAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var items = arrayListOf<Data>()
+    var items = arrayListOf<Post>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = FrameLayout(parent.context)

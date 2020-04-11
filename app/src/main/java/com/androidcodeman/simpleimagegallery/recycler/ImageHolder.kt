@@ -4,18 +4,14 @@ import android.view.View
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.androidcodeman.simpleimagegallery.fragments.EditorFragment
+import com.androidcodeman.simpleimagegallery.fragments.ItemFragment
+import com.androidcodeman.simpleimagegallery.json.Post
 
 class ImageHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    private val fragment = EditorFragment()
+    private val fragment = ItemFragment()
 
-    init {
-        val size = (view.context as? AppCompatActivity)?.window?.decorView?.width ?: 0
-        view.layoutParams = FrameLayout.LayoutParams(size, size)
-    }
-
-    fun bind(data: Data) {
+    fun bind(data: Post) {
         fragment.data = data
     }
 

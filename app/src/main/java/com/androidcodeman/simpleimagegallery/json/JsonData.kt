@@ -2,12 +2,12 @@ package com.androidcodeman.simpleimagegallery.json
 
 import com.google.gson.annotations.SerializedName
 
-class JsonData(images: ArrayList<String>? = null) {
+class JsonData(posts: ArrayList<Post>? = null) {
 
-    @SerializedName("images")
-    var images: ArrayList<String>? = arrayListOf()
+    @SerializedName("posts")
+    var posts: ArrayList<Post>? = arrayListOf()
 
     init {
-        this.images = images
+        this.posts = posts
     }
 }
