@@ -5,22 +5,22 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKeys
 import com.androidcodeman.simpleimagegallery.fragments.ItemFragment
 import com.androidcodeman.simpleimagegallery.json.JsonData
 import com.androidcodeman.simpleimagegallery.json.Post
 import com.androidcodeman.simpleimagegallery.recycler.ImagesAdapter
-import com.androidcodeman.simpleimagegallery.shit.MainActivity
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_root.*
-import java.lang.Exception
 
-class RootActivity : BaseActivity() {
+class RootActivity : BaseActivity(), ItemFragment.Listener {
 
     private lateinit var jsonData: JsonData
-    private lateinit var imagesStorage: SharedPreferences
+    private lateinit var privateStorage: SharedPreferences
+    private lateinit var publicStorage: SharedPreferences
     private val gson = Gson()
     private val adapter = ImagesAdapter()
 
@@ -51,8 +51,13 @@ class RootActivity : BaseActivity() {
 
     private fun initData(): ArrayList<Post> {
         try {
-            imagesStorage = getSharedPreferences("images", Context.MODE_PRIVATE)
-            val imagesJson = imagesStorage.getString(getStorageKey(), """{"posts" : null}""")
+            publicStorage = getSharedPreferences(getStorageKey("public"), Context.MODE_PRIVATE)
+            privateStorage = EncryptedSharedPreferences.create(getStorageKey("private"),
+                    MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
+                    this,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM)
+            val imagesJson = privateStorage.getString("images", """{"posts" : null}""")
             jsonData = gson.fromJson(imagesJson, JsonData::class.java)
             return jsonData.posts ?: arrayListOf()
         } catch (ex: Exception) {
@@ -63,11 +68,13 @@ class RootActivity : BaseActivity() {
 
     private fun saveData() {
         jsonData.posts = adapter.items
-        imagesStorage.edit().putString(getStorageKey(), gson.toJson(jsonData, JsonData::class.java)).apply()
+        val data = gson.toJson(jsonData, JsonData::class.java)
+        publicStorage.edit().putString("images", data).apply()
+        privateStorage.edit().putString("images", data).apply()
     }
 
-    private fun getStorageKey(): String {
-        return "${getSessionViewModel().getUserName()}_images"
+    private fun getStorageKey(other: String): String {
+        return "${getSessionViewModel().getUserName()}_images_$other"
     }
 
     private fun onAddImageClick() {
@@ -87,11 +94,16 @@ class RootActivity : BaseActivity() {
         }
     }
 
-    private fun getFirstFragment(): ItemFragment? {
-        return supportFragmentManager.fragments.find { (it as? ItemFragment)?.position == 0 } as? ItemFragment
-    }
-
     companion object {
         private const val SELECT_IMAGE = 1242
+    }
+
+    override fun onDeleteClick(item: Post) {
+        val index = adapter.items.indexOf(item)
+        if (index >= 0) {
+            adapter.items.removeAt(index)
+            adapter.notifyItemRemoved(index)
+            saveData()
+        }
     }
 }

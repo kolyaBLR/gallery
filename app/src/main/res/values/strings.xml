@@ -59,4 +59,5 @@
     <string name="create_new_post">Create new post</string>
     <string name="post_created">Post created!</string>
     <string name="saving_error">saving error</string>
+    <string name="delete">delete</string>
 </resources>

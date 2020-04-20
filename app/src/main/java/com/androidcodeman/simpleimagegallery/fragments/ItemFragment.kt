@@ -46,6 +46,10 @@ class ItemFragment : Fragment() {
                     .putExtra("width", getSize())
             this.startActivity(intent)
         }
+        deleteButton.setOnClickListener {
+            val post = this.data ?: return@setOnClickListener
+            (context as? Listener)?.onDeleteClick(post)
+        }
         bindView()
     }
 
@@ -64,5 +68,9 @@ class ItemFragment : Fragment() {
 
         titleItem.text = data.title
         descriptionItem.text = data.description
+    }
+
+    interface Listener {
+        fun onDeleteClick(item: Post)
     }
 }
