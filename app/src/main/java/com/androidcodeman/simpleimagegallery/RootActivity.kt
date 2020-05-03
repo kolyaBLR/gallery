@@ -1,37 +1,52 @@
 package com.androidcodeman.simpleimagegallery
 
 import android.app.Activity
+import android.app.ProgressDialog
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
-import com.androidcodeman.simpleimagegallery.fragments.ItemFragment
+import com.androidcodeman.simpleimagegallery.api.Result
+import com.androidcodeman.simpleimagegallery.api.RetrofitInstance
+import com.androidcodeman.simpleimagegallery.recycler.ItemHolder
 import com.androidcodeman.simpleimagegallery.json.JsonData
 import com.androidcodeman.simpleimagegallery.json.Post
 import com.androidcodeman.simpleimagegallery.recycler.ImagesAdapter
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_root.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class RootActivity : BaseActivity(), ItemFragment.Listener {
+class RootActivity : BaseActivity(), ItemHolder.Listener {
 
+    private lateinit var dialog: ProgressDialog
     private lateinit var jsonData: JsonData
     private lateinit var privateStorage: SharedPreferences
     private lateinit var publicStorage: SharedPreferences
     private val gson = Gson()
     private val adapter = ImagesAdapter()
+    private lateinit var networkService: Intent
+    private var isRegister = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_root)
+        dialog = ProgressDialog(this)
+        networkService = Intent(this, NetworkService::class.java)
 
         if (!getSessionViewModel().isAuth()) {
             signOut()
         } else {
             adapter.items = ArrayList(initData())
+            initNetworkPostsIfNeed()
 
             imagesRecycler.layoutManager = LinearLayoutManager(this)
             imagesRecycler.adapter = adapter
@@ -39,6 +54,48 @@ class RootActivity : BaseActivity(), ItemFragment.Listener {
             addImageButton.setOnClickListener { onAddImageClick() }
 
             signOut.setOnClickListener { signOut() }
+
+            if (getSessionViewModel().isAdmin()) {
+                addImageButton.visibility = View.VISIBLE
+            } else {
+                addImageButton.visibility = View.INVISIBLE
+            }
+            registerReceiver(receiver, IntentFilter(NetworkService.ACTION))
+        }
+    }
+
+    private val receiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            (intent?.getSerializableExtra(NetworkService.RESULT) as? NetworkResult)?.items
+                    ?.let { adapter.items.addAll(it) }
+                    ?.let { saveData() }
+                    ?.let { adapter.notifyDataSetChanged() }
+                    ?.let {
+                        if (dialog.isShowing) {
+                            dialog.dismiss()
+                        }
+                    }
+                    ?: context?.let {
+                        Toast.makeText(it, R.string.error_loading, Toast.LENGTH_LONG).show()
+                    }
+        }
+    }
+
+    private fun initNetworkPostsIfNeed() {
+        if (adapter.items.isNotEmpty()) {
+            return
+        }
+        dialog.show()
+        dialog.dismiss()
+        isRegister = true
+        startService(networkService)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isRegister) {
+            stopService(intent)
+            unregisterReceiver(receiver)
         }
     }
 
@@ -61,7 +118,6 @@ class RootActivity : BaseActivity(), ItemFragment.Listener {
             jsonData = gson.fromJson(imagesJson, JsonData::class.java)
             return jsonData.posts ?: arrayListOf()
         } catch (ex: Exception) {
-            Toast.makeText(this, R.string.error_read_json, Toast.LENGTH_LONG).show()
             return arrayListOf()
         }
     }
@@ -74,7 +130,7 @@ class RootActivity : BaseActivity(), ItemFragment.Listener {
     }
 
     private fun getStorageKey(other: String): String {
-        return "${getSessionViewModel().getUserName()}_images_$other"
+        return "posts_$other"
     }
 
     private fun onAddImageClick() {
@@ -87,8 +143,15 @@ class RootActivity : BaseActivity(), ItemFragment.Listener {
         if (requestCode == SELECT_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
             imagesRecycler.post {
                 val item = data.getSerializableExtra(PostCreateActivity.RESULT_KEY) as Post
-                adapter.items.add(0, item)
-                adapter.notifyItemInserted(0)
+                val isEdit = data.getBooleanExtra(PostCreateActivity.IS_EDIT, false)
+                val position = data.getIntExtra(PostCreateActivity.POSITION, 0)
+                if (isEdit) {
+                    adapter.items[position] = item
+                    adapter.notifyItemChanged(position)
+                } else {
+                    adapter.items.add(position, item)
+                    adapter.notifyItemInserted(position)
+                }
                 saveData()
             }
         }
@@ -105,5 +168,10 @@ class RootActivity : BaseActivity(), ItemFragment.Listener {
             adapter.notifyItemRemoved(index)
             saveData()
         }
+    }
+
+    override fun onEditClick(item: Post, adapterPosition: Int) {
+        startActivityForResult(Intent(this, PostCreateActivity::class.java)
+                .putExtra(PostCreateActivity.POST, item).putExtra(PostCreateActivity.POSITION, adapterPosition), SELECT_IMAGE)
     }
 }

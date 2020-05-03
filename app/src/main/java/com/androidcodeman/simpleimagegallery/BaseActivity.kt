@@ -8,11 +8,11 @@ import com.androidcodeman.simpleimagegallery.viewmodel.SessionViewModel
 
 abstract class BaseActivity: AppCompatActivity() {
 
-    protected fun getAuthViewModel(): AuthViewModel {
+    fun getAuthViewModel(): AuthViewModel {
         return ViewModelProviders.of(this).get(AuthViewModel::class.java)
     }
 
-    protected fun getSessionViewModel(): SessionViewModel {
+    fun getSessionViewModel(): SessionViewModel {
         return ViewModelProviders.of(this).get(SessionViewModel::class.java)
     }
 

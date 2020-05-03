@@ -60,4 +60,8 @@
     <string name="post_created">Post created!</string>
     <string name="saving_error">saving error</string>
     <string name="delete">delete</string>
+    <string name="edit">Edit</string>
+    <string name="error_loading">error loading</string>
+    <string name="post_edited">Post edited</string>
+    <string name="save_post">Save post</string>
 </resources>

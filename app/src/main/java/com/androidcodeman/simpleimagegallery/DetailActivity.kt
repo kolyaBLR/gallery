@@ -25,7 +25,11 @@ class DetailActivity : AppCompatActivity() {
 
         if (data.imageUrl != null && data.imageUrl != "") {
             image.visibility = View.VISIBLE
-            Picasso.get().load(File(data.imageUrl)).into(image)
+            if (data.isLocal) {
+                Picasso.get().load(File(data.imageUrl)).into(image)
+            } else {
+                Picasso.get().load(data.imageUrl).into(image)
+            }
         } else {
             image.visibility = View.GONE
         }

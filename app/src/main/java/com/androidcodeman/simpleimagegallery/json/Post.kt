@@ -13,4 +13,6 @@ class Post : Serializable {
 
     @SerializedName("description")
     var description = ""
+
+    var isLocal = true
 }
