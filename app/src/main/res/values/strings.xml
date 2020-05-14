@@ -64,4 +64,10 @@
     <string name="error_loading">error loading</string>
     <string name="post_edited">Post edited</string>
     <string name="save_post">Save post</string>
+
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
+        AIzaSyDFm9mTllf70rcO7DIFrp-RJ0ykN_-JX9c
+    </string>
+    <string name="event_place">Place of the event</string>
+    <string name="delete_position">delete position</string>
 </resources>

@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -17,7 +18,7 @@
             android:layout_height="0dp"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintDimensionRatio="16:9"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -60,11 +61,28 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:text="@string/create_new_post"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionEditor" />
+            app:layout_constraintTop_toTopOf="@+id/image" />
+
+        <FrameLayout
+            android:id="@+id/mapFrame"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionEditor">
+
+            <Button
+                android:id="@+id/deletePosition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delete_position"
+                android:textAllCaps="true"
+                android:textSize="12sp" />
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

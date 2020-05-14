@@ -10,7 +10,8 @@
         android:required="true" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -40,6 +41,10 @@
             android:screenOrientation="portrait" />
 
         <service android:name=".NetworkService" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDFm9mTllf70rcO7DIFrp-RJ0ykN_-JX9c" />
 
     </application>
 

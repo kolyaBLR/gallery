@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/root"
     android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="8dp">
+        android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/image"
@@ -41,12 +41,22 @@
             android:layout_marginTop="8dp"
             android:textColor="@android:color/black"
             android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleItem"
             tools:text="description" />
+
+        <FrameLayout
+            android:id="@+id/mapFrame"
+            android:layout_width="0dp"
+            android:layout_height="300dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionItem" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

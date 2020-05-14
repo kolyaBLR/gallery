@@ -86,7 +86,6 @@ class RootActivity : BaseActivity(), ItemHolder.Listener {
             return
         }
         dialog.show()
-        dialog.dismiss()
         isRegister = true
         startService(networkService)
     }
